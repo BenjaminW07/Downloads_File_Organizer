@@ -17,7 +17,6 @@ Psuedocode - When this runs it reads the file name extension and sorts the files
 
 namespace fs = std::filesystem;
 
-
 void organize_downloads() {
     // Get the Downloads folder path (works on Windows, adjust if needed)
     std::string home = std::getenv("USERPROFILE"); // On Linux/Mac use HOME
@@ -70,7 +69,9 @@ void organize_downloads() {
 }
 
 int main() {
+    
     organize_downloads();
-    std::cout << "✅ Downloads folder organized successfully!\n";
+
+    std::cout << "Downloads folder organized successfully!\n";
     return 0;
 }
