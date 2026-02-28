@@ -1,11 +1,8 @@
 /*
 Benjamin Walker 
-Beginner project starting out now as file parser. 12/27/2025
-This program (when fully complete) has menu to use for accessing functions
-that preform specific task. For starting it will have a downloads file parser.
-That organizes files into folders in the main "Downloads" folder in the file explorer.
+
 Psuedocode - When this runs it reads the file name extension and sorts the files into folders
-             in the main "Downloads" folder on Windows OS (as of now).
+             in the main "Downloads" folder on Windows OS.
 */
 
 #include <iostream>
@@ -14,6 +11,7 @@ Psuedocode - When this runs it reads the file name extension and sorts the files
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <cctype>
 
 namespace fs = std::filesystem;
 
@@ -37,12 +35,18 @@ void organize_downloads() {
     };
 
     try {
+        // Iterates through downloads folder and references it to entry.
         for (const auto& entry : fs::directory_iterator(downloads_path)) {
-            if (!fs::is_regular_file(entry)) continue; // skip folders
+            if (!fs::is_regular_file(entry)) 
+                continue; // skip folders
 
+            // Converts filesystem::path into a plain string, entry.path() returns std::filesystem::path
+            // .filename() is a memeber function of filesystem::path that returns another path containing
+            // only the last component ex. "photo.jpg"
             std::string filename = entry.path().filename().string();
-            std::string ext = entry.path().extension().string();
-            for (auto& c : ext) c = std::tolower(c); // lowercase extension
+            std::string ext = entry.path().extension().string(); // Just stores the extension ex. ".jpg"
+            for (auto& c : ext) 
+                c = std::tolower(c); // lowercase extension
 
             bool moved = false;
             for (const auto& [folder_name, extensions] : file_types) {
