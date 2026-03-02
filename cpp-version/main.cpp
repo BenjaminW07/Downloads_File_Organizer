@@ -1,10 +1,3 @@
-/*
-Benjamin Walker 
-
-Psuedocode - When this runs it reads the file name extension and sorts the files into folders
-             in the main "Downloads" folder on Windows OS.
-*/
-
 #include <iostream>
 #include <filesystem>
 #include <string>
