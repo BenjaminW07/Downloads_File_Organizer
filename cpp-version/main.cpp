@@ -9,11 +9,11 @@
 namespace fs = std::filesystem;
 
 void organize_downloads() {
-    // Get the Downloads folder path (works on Windows, adjust if needed)
+    // Path to the user's Downloads folder (Windows).
     std::string home = std::getenv("USERPROFILE"); // On Linux/Mac use HOME
     std::string downloads_path = home + "\\Downloads";
 
-    // Define file type categories
+    // File categories mapped to their extensions.
     std::map<std::string, std::vector<std::string>> file_types = {
         {"Images", {".jpg", ".jpeg", ".png", ".gif", ".bmp"}},
         {"Documents", {".pdf", ".docs", ".docx", ".txt", ".csv"}},
@@ -30,18 +30,20 @@ void organize_downloads() {
     try {
         // Iterates through downloads folder and references it to entry.
         for (const auto& entry : fs::directory_iterator(downloads_path)) {
+            // Skip directories; only process files.
             if (!fs::is_regular_file(entry)) 
-                continue; // skip folders
+                continue; 
 
-            // Converts filesystem::path into a plain string, entry.path() returns std::filesystem::path
-            // .filename() is a memeber function of filesystem::path that returns another path containing
-            // only the last component ex. "photo.jpg"
+            // Extract filename and extension.
             std::string filename = entry.path().filename().string();
-            std::string ext = entry.path().extension().string(); // Just stores the extension ex. ".jpg"
+            std::string ext = entry.path().extension().string();
+            // Normalize extension to lowercase.
             for (auto& c : ext) 
-                c = std::tolower(c); // lowercase extension
+                c = std::tolower(c); 
 
             bool moved = false;
+
+            // Attempt to match the file extension to a category.
             for (const auto& [folder_name, extensions] : file_types) {
                 if (!extensions.empty() && std::find(extensions.begin(), extensions.end(), ext) != extensions.end()) {
                     
